@@ -1,5 +1,7 @@
 flask
-numpy
+flask_pymongo
+jsonify
+numpy==1.19.0
 matplotlib
 datetime
 pymongo

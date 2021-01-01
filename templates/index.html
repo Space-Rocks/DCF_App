@@ -1,20 +1,16 @@
-<!DOCTYPE HTML>
+{% extends 'base.html' %}
+<title>Cash Flow App</title>
+{% block head %}
 
-<html lang="en">
+{% endblock %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie-edge">
-  <title>APP</title>
-  {% block head %}
-  {% endblock %}
-</head>
+{% block body %}
+<h1>Cash Flow App</h1>
+<div class="content">
+<form action="/" method="POST">
+<input type="text" id="content" name="content">
+<input type="submit" value="Submit">
+</form>
+</div>
 
-<body>
-    {% block body %}
-    <h1>APP</h1>
-    {% endblock %}
-</body>
-
-</html>
+{% endblock %}

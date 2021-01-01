@@ -6,7 +6,7 @@ from pymongo import MongoClient
 # Assign client, database, and collection
 if __name__ == "db":
         client = MongoClient() #Client
-        db = client.StockFinancialData #Database
+        db = client.CashFlowAppDB #Database
         Stocks = db.Stocks #Collection
 
 # Create document
