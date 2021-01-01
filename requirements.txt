@@ -1,0 +1,6 @@
+flask
+numpy
+matplotlib
+datetime
+pymongo
+yahoofinancials
