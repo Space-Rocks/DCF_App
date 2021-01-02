@@ -1,5 +1,6 @@
 # Import app modules
-from flask import Flask, render_template, url_for, jsonify, request, redirect
+from flask import Flask, render_template, url_for, request, redirect
+import json
 from flask_pymongo import PyMongo
 import data
 
@@ -9,14 +10,33 @@ app.config['MONGO_DBNAME'] = 'CashFlowAppDB'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/CashFlowAppDB'
 mongo = PyMongo(app)
 
+# Declare global variables
+ticker = ""
+years = []
+free_cash_flow = []
+test1 = []
+test2 = []
+test3 = []
+
+# Define app 
 @app.route('/', methods=['POST','GET'])
 def index():
     if request.method == 'POST':
-        ticker = str(request.form['content'])
-        add_stock(ticker)
+        global ticker, years, free_cash_flow, test1,test2,test3
+        try:
+          ticker = str(request.form['ticker'])
+          years_forward = int(request.form['years_forward'])
+        except:
+          pass
+        if get_one_stock(ticker) == None:
+          add_stock(ticker)
+          years,free_cash_flow = data.get_cash_flow_data(ticker)
+        else:
+          #years,free_cash_flow = data.get_cash_flow_data(ticker)
+          test1,test2,test3 = get_one_stock(ticker)
         return(redirect('/'))
     else:
-        return(render_template('index.html'))
+        return(render_template('index.html', ticker=test1, years=test2, free_cash_flow=test3))
 
 # Define database CRUD operations
 @app.route('/', methods=['POST'])
@@ -25,30 +45,19 @@ def add_stock(ticker):
   years,free_cash_flow = data.get_cash_flow_data(ticker)
   Stocks = mongo.db.Stocks
   stock_id = Stocks.insert({'ticker': ticker, 'years': years, 'free_cash_flow': free_cash_flow})
-  new_stock = Stocks.find_one({'_id': stock_id })
-  output = {'ticker' : new_stock['ticker'], 'years' : new_stock['years'], 'free_cash_flow': new_stock['free_cash_flow']}
-  return jsonify({'result' : output})
 
 @app.route('/', methods=['GET'])
 def get_one_stock(ticker):
   ticker = ticker
   Stocks = mongo.db.Stocks
-  s = stocks.find_one({'ticker' : ticker})
+  s = Stocks.find_one({'ticker' : ticker})
   if s:
-    output = {'ticker' : s['ticker'], 'years' : s['years'], 'free_cash_flow': s['free_cash_flow']}
+    return(s['ticker'],s['years'],s['free_cash_flow'])
   else:
-    output = "No such ticker"
-  return jsonify({'result' : output})
-
-# Placeholders
-ticker = 'AAPL'
-years_forward = 5
-method = 1
+    return(None)
 
 # Execute app
 if __name__ == "__main__":
-
-    years,free_cash_flow = data.get_cash_flow_data(ticker)
     app.run(debug=True)
 
 # Placeholder for testing 

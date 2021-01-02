@@ -1,16 +1,54 @@
 {% extends 'base.html' %}
-<title>Cash Flow App</title>
-{% block head %}
 
+{% block head %}
+<title>Cash Flow App</title>
 {% endblock %}
 
 {% block body %}
 <h1>Cash Flow App</h1>
 <div class="content">
 <form action="/" method="POST">
-<input type="text" id="content" name="content">
+<label for="ticker">Ticker:</label><br>
+<input type="text" id="ticker" name="ticker"><br>
+<label for="years_forward">Number of years to project:</label><br>
+<input type="text" id="years_forward" name="years_forward"><br>
 <input type="submit" value="Submit">
 </form>
 </div>
+
+<p> 
+{{ ticker }} <br>
+{{ years }} <br>
+{{ free_cash_flow }}
+</p>
+
+<canvas id="myChart" width="1000" height="500"></canvas>
+
+<script>
+// define the chart data
+var chartData = {
+  labels : [{% for item in years %}
+             "{{item}}",
+            {% endfor %}],
+  datasets : [{
+      label: '{{ ticker }}',
+      fill: true,
+      data : [{% for item in free_cash_flow %}
+                {{item}},
+              {% endfor %}],
+      spanGaps: false
+  }]
+}
+
+// get chart canvas
+var ctx = document.getElementById("myChart").getContext("2d");
+ 
+// create the chart using the chart canvas
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: chartData,
+});
+
+</script>
 
 {% endblock %}
