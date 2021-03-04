@@ -33,10 +33,11 @@ def index():
           years,free_cash_flow = data.get_cash_flow_data(ticker)
         else:
           #years,free_cash_flow = data.get_cash_flow_data(ticker)
-          test1,test2,test3 = get_one_stock(ticker)
+          years,free_cash_flow = get_one_stock(ticker)
+          #test1,test2,test3 = get_one_stock(ticker)
         return(redirect('/'))
     else:
-        return(render_template('index.html', ticker=test1, years=test2, free_cash_flow=test3))
+        return(render_template('index.html', ticker=ticker, years=years, free_cash_flow=free_cash_flow))
 
 # Define database CRUD operations
 @app.route('/', methods=['POST'])
@@ -52,7 +53,7 @@ def get_one_stock(ticker):
   Stocks = mongo.db.Stocks
   s = Stocks.find_one({'ticker' : ticker})
   if s:
-    return(s['ticker'],s['years'],s['free_cash_flow'])
+    return(s['years'],s['free_cash_flow'])
   else:
     return(None)
 
@@ -62,6 +63,7 @@ if __name__ == "__main__":
 
 # Placeholder for testing 
 foo = 0
+
 
 
 
