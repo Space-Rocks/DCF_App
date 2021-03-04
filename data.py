@@ -29,7 +29,7 @@ def project_free_cash_flow(years,free_cash_flow,years_forward,method):
     year -- input list of years for free cash flow data to project
     free_cash_flow -- list of free cash flow data on which to base projection
     years_forward -- the number of years to forward project free cash flow
-    method -- the method by which to fit the input free cash flow data and project forward (polynomial degree)
+    method -- the method by which to fit the input free cash flow data and project forward (polynomial degree for now)
     """
 
     # Create list of years over which to project free cash flow
